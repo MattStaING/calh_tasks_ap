@@ -8,7 +8,7 @@ numer pesel klienta, oraz czy jest aktywnym klientem, jej funkcjonalności są n
     is_active na False nie powoduje usunięcia rekordu dla
     - Zadanie polega na zaimplenentowaniu metod dzięki którym podczas iterowania po
     obiekcie klasy ClientsList będą zwracane tylko numery pesel dla osób które są
-    aktywnymi klientami (wartość flagi is_active to True)
+    aktywnymi klientami (wartość flagi is_active to True).
 """
 
 
@@ -22,7 +22,26 @@ class ClientsList:
         self.clients.append({"pesel": pesel, "is_active": True})
 
     def remove_client(self, pesel: str):
+
         for i in range(0, len(self.clients)):
             if self.clients[i]["pesel"] == pesel:
                 self.clients[i]["is_active"] = False
                 break
+
+    def __iter__(self):
+        self.__clients_iter = iter(self.clients)
+        dupa = []
+        for a in list(iter(self.clients)):
+            if (a["is_active"]) == True:
+                dupa.append(a)
+        self.__dupa_iter = iter(dupa)
+        return self
+
+
+    def __next__(self):
+        while True:
+            client = next(self.__clients_iter)
+            if (client["is_active"]) == True:
+                return client["pesel"]
+
+
